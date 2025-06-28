@@ -98,3 +98,15 @@ function printTree(levelHeight: number = 1): void {
 }
 
 printTree(5);
+
+export {
+  printStars,
+  printHashtags,
+  printSpaces,
+  printHashtagsRectangle,
+  printRightStarsTriangle,
+  printLeftStarsTriangle,
+  printLevels,
+  placeTopOrnement,
+  printTree,
+};

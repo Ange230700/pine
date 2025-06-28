@@ -26,5 +26,5 @@
     "noImplicitAny": true,
     "rootDir": "./"
   },
-  "include": ["src"]
+  "include": ["src", "tests"]
 }
