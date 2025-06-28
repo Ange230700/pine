@@ -14,7 +14,7 @@ interface Shape {
 }
 
 // Utility static class for common printing functions
-class Printer {
+export class Printer {
   static stars(count: number = 1): string {
     return "*".repeat(count);
   }
@@ -27,7 +27,7 @@ class Printer {
 }
 
 // Rectangle shape
-class HashtagsRectangle implements Shape {
+export class HashtagsRectangle implements Shape {
   constructor(
     private readonly height: number,
     private readonly width: number,
@@ -52,7 +52,7 @@ class HashtagsRectangle implements Shape {
 }
 
 // Left triangle shape
-class LeftStarsTriangle implements Shape {
+export class LeftStarsTriangle implements Shape {
   constructor(private readonly size: number) {}
 
   toOutputObject(): ShapeOutput {
@@ -73,7 +73,7 @@ class LeftStarsTriangle implements Shape {
 }
 
 // Right triangle shape
-class RightStarsTriangle implements Shape {
+export class RightStarsTriangle implements Shape {
   constructor(private readonly size: number) {}
 
   toOutputObject(): ShapeOutput {
@@ -94,7 +94,7 @@ class RightStarsTriangle implements Shape {
 }
 
 // Level of the tree (composed shape)
-class TreeLevel implements Shape {
+export class TreeLevel implements Shape {
   constructor(
     private readonly height: number,
     private readonly level: number,
@@ -128,7 +128,7 @@ class TreeLevel implements Shape {
 }
 
 // Ornament (top of the tree)
-class TopOrnament implements Shape {
+export class TopOrnament implements Shape {
   constructor(private readonly levelHeight: number) {}
 
   toOutputObject(): ShapeOutput {
@@ -146,7 +146,7 @@ class TopOrnament implements Shape {
 }
 
 // The Tree itself
-class Tree implements Shape {
+export class Tree implements Shape {
   constructor(private readonly levelHeight: number = 1) {}
 
   toOutputObject(): ShapeOutput {
