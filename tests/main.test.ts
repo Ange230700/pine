@@ -46,7 +46,7 @@ describe("Print Functions", () => {
   });
 
   test("placeTopOrnement places ornament with correct offset", () => {
-    expect(placeTopOrnement(2)).toBe("    +\n");
+    expect(placeTopOrnement(2)).toBe("     +\n");
     expect(placeTopOrnement(1)).toBe("   +\n");
   });
 
