@@ -1,21 +1,24 @@
 // src\main.ts
 
-function printStars(numberOfStars = 1) {
-  const starsString = "*".repeat(numberOfStars);
-  return starsString;
-}
+type PrintFn = (count?: number) => string;
 
-function printHashtags(numberOfHashtags = 1) {
-  const hashtagsString = "#".repeat(numberOfHashtags);
-  return hashtagsString;
-}
+const printStars: PrintFn = (numberOfStars = 1) => {
+  return "*".repeat(numberOfStars);
+};
 
-function printSpaces(numberOfSpaces = 1) {
-  const spacesString = " ".repeat(numberOfSpaces);
-  return spacesString;
-}
+const printHashtags: PrintFn = (numberOfHashtags = 1) => {
+  return "#".repeat(numberOfHashtags);
+};
 
-function printHashtagsRectangle(height = 1, width = 1, offset = 1) {
+const printSpaces: PrintFn = (numberOfSpaces = 1) => {
+  return " ".repeat(numberOfSpaces);
+};
+
+function printHashtagsRectangle(
+  height: number = 1,
+  width: number = 1,
+  offset: number = 1,
+): string {
   let starsRectangle = "";
   const indentation = printSpaces(offset);
 
@@ -26,7 +29,7 @@ function printHashtagsRectangle(height = 1, width = 1, offset = 1) {
   return starsRectangle;
 }
 
-function printRightStarsTriangle(size = 1) {
+function printRightStarsTriangle(size: number = 1): string {
   let rightStarsTriangle = "";
 
   for (let row = 0; row < size; row++) {
@@ -36,7 +39,7 @@ function printRightStarsTriangle(size = 1) {
   return rightStarsTriangle;
 }
 
-function printLeftStarsTriangle(size = 1) {
+function printLeftStarsTriangle(size: number = 1): string {
   let leftStarsTriangle = "";
 
   for (let row = 0; row < size; row++) {
@@ -46,7 +49,11 @@ function printLeftStarsTriangle(size = 1) {
   return leftStarsTriangle;
 }
 
-function printLevels(height = 1, level = 1, offset = 1) {
+function printLevels(
+  height: number = 1,
+  level: number = 1,
+  offset: number = 1,
+): string {
   const indentation = printSpaces(offset);
   let topOfTree = "";
 
@@ -63,13 +70,13 @@ function printLevels(height = 1, level = 1, offset = 1) {
   return topOfTree;
 }
 
-function placeTopOrnement(levelHeight = 1) {
+function placeTopOrnement(levelHeight: number = 1): string {
   const ornamentOffset = Math.floor((4 * levelHeight + 2) / 2);
   const indentation = printSpaces(ornamentOffset);
   return indentation + "+" + "\n";
 }
 
-function printTree(levelHeight = 1) {
+function printTree(levelHeight: number = 1): void {
   let tree = "";
   const totalWidth = 4 * levelHeight + 2;
   const trunkWidth = levelHeight;

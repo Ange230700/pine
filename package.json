@@ -13,7 +13,8 @@
     "prepare": "husky",
     "preview": "vite preview",
     "start": "tsx src/main.ts",
-    "test": "echo \"Error: no test specified\""
+    "launch": "tsx src/index.ts",
+    "test": "echo \"Warning: no test specified yet\""
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown",
