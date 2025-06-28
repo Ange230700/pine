@@ -1,7 +1,15 @@
 // src\index.ts
 
-// Base interface for all printable shapes
+// ShapeOutput interface: represents a rendered shape as lines and dimensions
+interface ShapeOutput {
+  lines: string[];
+  width: number;
+  height: number;
+}
+
+// Shape interface: requires both string and object output
 interface Shape {
+  toOutputObject(): ShapeOutput;
   toString(): string;
 }
 
@@ -26,13 +34,20 @@ class HashtagsRectangle implements Shape {
     private readonly offset: number = 0,
   ) {}
 
-  toString(): string {
-    const indentation = Printer.spaces(this.offset);
-    let result = "";
+  toOutputObject(): ShapeOutput {
+    const lines: string[] = [];
     for (let i = 0; i < this.height; i++) {
-      result += indentation + Printer.hashtags(this.width) + "\n";
+      lines.push(Printer.spaces(this.offset) + Printer.hashtags(this.width));
     }
-    return result;
+    return {
+      lines,
+      width: this.offset + this.width,
+      height: this.height,
+    };
+  }
+
+  toString(): string {
+    return this.toOutputObject().lines.join("\n");
   }
 }
 
@@ -40,13 +55,20 @@ class HashtagsRectangle implements Shape {
 class LeftStarsTriangle implements Shape {
   constructor(private readonly size: number) {}
 
-  toString(): string {
-    let result = "";
+  toOutputObject(): ShapeOutput {
+    const lines: string[] = [];
     for (let row = 0; row < this.size; row++) {
-      result +=
-        Printer.spaces(this.size - row) + "/" + Printer.stars(row) + "\n";
+      lines.push(Printer.spaces(this.size - row) + "/" + Printer.stars(row));
     }
-    return result;
+    return {
+      lines,
+      width: this.size + 1,
+      height: this.size,
+    };
+  }
+
+  toString(): string {
+    return this.toOutputObject().lines.join("\n");
   }
 }
 
@@ -54,12 +76,20 @@ class LeftStarsTriangle implements Shape {
 class RightStarsTriangle implements Shape {
   constructor(private readonly size: number) {}
 
-  toString(): string {
-    let result = "";
+  toOutputObject(): ShapeOutput {
+    const lines: string[] = [];
     for (let row = 0; row < this.size; row++) {
-      result += "|" + Printer.stars(row) + "\\" + "\n";
+      lines.push("|" + Printer.stars(row) + "\\");
     }
-    return result;
+    return {
+      lines,
+      width: this.size + 1,
+      height: this.size,
+    };
+  }
+
+  toString(): string {
+    return this.toOutputObject().lines.join("\n");
   }
 }
 
@@ -71,32 +101,47 @@ class TreeLevel implements Shape {
     private readonly offset: number = 0,
   ) {}
 
-  toString(): string {
-    const left = new LeftStarsTriangle(this.height + this.level)
-      .toString()
-      .split("\n")
-      .filter((line) => line.trim() !== "");
-    const right = new RightStarsTriangle(this.height + this.level)
-      .toString()
-      .split("\n")
-      .filter((line) => line.trim() !== "");
+  toOutputObject(): ShapeOutput {
+    const left = new LeftStarsTriangle(
+      this.height + this.level,
+    ).toOutputObject().lines;
+    const right = new RightStarsTriangle(
+      this.height + this.level,
+    ).toOutputObject().lines;
 
-    let result = "";
+    const lines: string[] = [];
     const indentation = Printer.spaces(this.offset);
 
     for (let row = this.level; row < this.height + this.level; row++) {
-      result += indentation + left[row] + right[row] + "\n";
+      lines.push(indentation + left[row] + right[row]);
     }
-    return result;
+    return {
+      lines,
+      width: this.offset + (this.height + this.level + 1) * 2,
+      height: this.height,
+    };
+  }
+
+  toString(): string {
+    return this.toOutputObject().lines.join("\n");
   }
 }
 
 // Ornament (top of the tree)
 class TopOrnament implements Shape {
   constructor(private readonly levelHeight: number) {}
-  toString(): string {
+
+  toOutputObject(): ShapeOutput {
     const ornamentOffset = Math.floor((4 * this.levelHeight + 2) / 2);
-    return Printer.spaces(ornamentOffset) + "+" + "\n";
+    return {
+      lines: [Printer.spaces(ornamentOffset) + "+"],
+      width: ornamentOffset + 1,
+      height: 1,
+    };
+  }
+
+  toString(): string {
+    return this.toOutputObject().lines.join("\n");
   }
 }
 
@@ -104,38 +149,51 @@ class TopOrnament implements Shape {
 class Tree implements Shape {
   constructor(private readonly levelHeight: number = 1) {}
 
-  toString(): string {
+  toOutputObject(): ShapeOutput {
     const totalWidth = 4 * this.levelHeight + 2;
     const trunkWidth = this.levelHeight;
     const trunkOffset = Math.ceil((totalWidth - trunkWidth) / 2);
 
-    let result = "";
-    result += new TopOrnament(this.levelHeight).toString();
+    const lines: string[] = [];
+    lines.push(...new TopOrnament(this.levelHeight).toOutputObject().lines);
 
     for (let row = 0; row < this.levelHeight + 1; row++) {
-      result +=
-        new TreeLevel(
+      lines.push(
+        ...new TreeLevel(
           this.levelHeight,
           row,
           this.levelHeight - row,
-        ).toString() + "\n";
+        ).toOutputObject().lines,
+      );
     }
 
-    result += new HashtagsRectangle(
-      this.levelHeight,
-      trunkWidth,
-      trunkOffset,
-    ).toString();
+    lines.push(
+      ...new HashtagsRectangle(
+        this.levelHeight,
+        trunkWidth,
+        trunkOffset,
+      ).toOutputObject().lines,
+    );
 
-    // Clean up blank lines
-    return result
-      .split("\n")
-      .filter((line) => line.trim() !== "")
-      .join("\n");
+    // Remove blank lines, just as before
+    const finalLines = lines.filter((line) => line.trim() !== "");
+    return {
+      lines: finalLines,
+      width: totalWidth,
+      height: finalLines.length,
+    };
+  }
+
+  toString(): string {
+    return this.toOutputObject().lines.join("\n");
   }
 
   print(): void {
     console.log(this.toString());
+  }
+
+  output(): void {
+    console.log("Tree as output object:", this.toOutputObject());
   }
 }
 
@@ -143,3 +201,4 @@ class Tree implements Shape {
 
 const tree = new Tree(5);
 tree.print();
+tree.output();
