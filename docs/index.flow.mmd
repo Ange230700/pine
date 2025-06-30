@@ -1,0 +1,15 @@
+%% docs\index.flow.mmd
+
+flowchart TD
+    A[Start: Tree(levelHeight)] --> B[Calculate totalWidth, trunkWidth, trunkOffset]
+    B --> C[Create TopOrnament(levelHeight)]
+    C --> D[For row in 0..levelHeight]
+    D --> E[Create TreeLevel(levelHeight, row, levelHeight - row)]
+    E --> F[Append TreeLevel lines]
+    F --> G{More rows?}
+    G -- Yes --> D
+    G -- No --> H[Create HashtagsRectangle(levelHeight, trunkWidth, trunkOffset)]
+    H --> I[Append trunk lines]
+    I --> J[Remove blank lines]
+    J --> K[Return ShapeOutput (lines, width, height)]
+    K --> L[print() or output()]

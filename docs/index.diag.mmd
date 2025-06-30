@@ -1,0 +1,59 @@
+%% docs\index.diag.mmd
+
+classDiagram
+    class Shape {
+        <<interface>>
+        +toOutputObject(): ShapeOutput
+        +toString(): string
+    }
+    class ShapeOutput {
+        +lines: string[]
+        +width: number
+        +height: number
+    }
+    class Printer {
+        <<static>>
+        +stars(count=1): string
+        +hashtags(count=1): string
+        +spaces(count=1): string
+    }
+    class HashtagsRectangle {
+        +toOutputObject(): ShapeOutput
+        +toString(): string
+    }
+    class LeftStarsTriangle {
+        +toOutputObject(): ShapeOutput
+        +toString(): string
+    }
+    class RightStarsTriangle {
+        +toOutputObject(): ShapeOutput
+        +toString(): string
+    }
+    class TreeLevel {
+        +toOutputObject(): ShapeOutput
+        +toString(): string
+    }
+    class TopOrnament {
+        +toOutputObject(): ShapeOutput
+        +toString(): string
+    }
+    class Tree {
+        +toOutputObject(): ShapeOutput
+        +toString(): string
+        +print(): void
+        +output(): void
+    }
+
+    Shape <|.. HashtagsRectangle
+    Shape <|.. LeftStarsTriangle
+    Shape <|.. RightStarsTriangle
+    Shape <|.. TreeLevel
+    Shape <|.. TopOrnament
+    Shape <|.. Tree
+
+    TreeLevel --> LeftStarsTriangle
+    TreeLevel --> RightStarsTriangle
+
+    Tree --> TopOrnament
+    Tree --> TreeLevel
+    Tree --> HashtagsRectangle
