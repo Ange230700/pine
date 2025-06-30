@@ -1,0 +1,24 @@
+%% docs\main.mmd
+
+flowchart TD
+    A[Start: printTree(levelHeight)] --> B[Calculate totalWidth, trunkWidth, trunkOffset]
+    B --> C[Call placeTopOrnement(levelHeight)]
+    C --> D[For each row in 0..levelHeight]
+    D --> E[Call printLevels(levelHeight, row, levelHeight-row)]
+    E --> F[Append level to tree string]
+    F --> G{More rows?}
+    G -- Yes --> D
+    G -- No --> H[Call printHashtagsRectangle(levelHeight, trunkWidth, trunkOffset)]
+    H --> I[Append trunk to tree string]
+    I --> J[Split tree into lines]
+    J --> K[Filter out blank/whitespace lines]
+    K --> L[Join lines by '\n']
+    L --> M[console.log(tree)]
+    M --> N[End]
+
+    %% Subgraph for sub-functions (called from main flow)
+    subgraph Subfunctions
+      C -.-> C1[placeTopOrnement]
+      E -.-> E1[printLevels]
+      H -.-> H1[printHashtagsRectangle]
+    end
